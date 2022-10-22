@@ -14,3 +14,10 @@ some, albeit minimal, arithmetic gymnastics. The array had accompanying it a buf
 used to compute the next screen, while the other acted as a buffer storing the computed future state of the screen. The one being used to compute the future
 screen was used by OpenGL to render to the screen. The two arrays would alternate acting as a buffer and as the representation of the current state of the screen.
 All scheduling was done using simple logic within the main program file. 
+## Files
+The main.cpp file includes everything, including the kernels. This may not be best practice, but I had issues importing kernels from a kernel.h file.
+The definitions.h file includes some global variables, like the height and width of the display screen.
+## How to run the program
+Unfortunately, you can't. The running program is device and os dependent, with a mess of dependencies. Because of that, since this is just as a demo, 
+I removed all the dependency folders and just added the main program code to this repository, since it would be extremely difficult for anybody to run this
+on their machine anyway.
