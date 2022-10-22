@@ -85,6 +85,7 @@ size_t szLocalWorkSize[1];
 size_t szParmDataBytes, szParmDataBytes2;
 size_t szKernelLength, szKernelLength2;
 static clock_t timeeeeee;
+// this kernel is only to generate a random initial state for the matrix
 const char* cgenerate_random[] =
 {
 "__kernel void generate_random(",
@@ -95,6 +96,7 @@ const char* cgenerate_random[] =
 "    out[i] = random[i];",
 "}",
 };
+// This is responsible for computing the main game of life logic that translates a matrix state into a future one.
 const char* cgenerate_next_matrix[] =
 {
 "__kernel void generate_next_matrix(",
@@ -199,8 +201,8 @@ void initMatrix(int matrix[HEIGHT * WIDTH], int size) {
 	}
 }
 
-char title[] = "Assignment 1 Simulation";
-
+char title[] = "OpenCL Game of Life";
+// initializing my two matrixes, 
 static cl_int matrix[HEIGHT * WIDTH] = { 0 };
 static cl_int bufferMatrix[HEIGHT * WIDTH] = { 0 };
 
@@ -218,10 +220,6 @@ void render(int[HEIGHT*WIDTH]);
 void display()
 {
 	
-
-	printf("%d", 1000 / (clock() - timeeeeee));
-	cout << endl;
-	timeeeeee = clock();
 	
 	
 	
@@ -361,22 +359,16 @@ void opencl_setup_scratch() {
 	program = clCreateProgramWithSource(m_context, SOURCE_NUM_LINES, cgenerate_next_matrix,
 		NULL, &err);
 	
-	cout << err;
 	err = clBuildProgram(program, 0, NULL, NULL, NULL, NULL);
 
-	cout << err;
 	generate_next_matrix = clCreateKernel(program, "generate_next_matrix", &err);
 	
-	cout << err;
+
 
 	szGlobalWorkSize[0] = HEIGHT * WIDTH;
 
 	szLocalWorkSize[0] = 1;
 
-	cout << err << "heleloo";
-
-
-	cout << err;
 
 	matrixBuffer = clCreateBuffer(m_context, CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR,
 		sizeof(cl_int) * HEIGHT * WIDTH, matrix, NULL);
